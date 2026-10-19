@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>20/10</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Blurred, endlessly scrolling photo rows; filled by main.js from photos.json -->
+  <div class="photo-wall" id="photo-wall" aria-hidden="true"></div>
+  <div class="veil" aria-hidden="true"></div>
+
+  <button class="lang-toggle" id="lang-toggle" type="button" aria-label="Switch language">EN</button>
+  <!-- Shown after the card opens: hides the card and un-blurs the photo wall -->
+  <button class="view-toggle" id="view-toggle" type="button"></button>
+
+  <main class="stage">
+    <button class="envelope" id="envelope" type="button">
+      <span class="envelope-back"></span>
+      <span class="letter-peek"><span class="letter-heart">♥</span></span>
+      <span class="envelope-front"></span>
+      <span class="envelope-flap"></span>
+      <span class="seal">♥</span>
+    </button>
+    <p class="hint" id="hint" data-i18n="hint"></p>
+
+    <article class="card" id="card" aria-live="polite">
+      <p class="occasion reveal" data-i18n="occasion"></p>
+      <h1 class="title reveal" data-i18n="title"></h1>
+      <p class="greeting reveal" data-i18n="greeting"></p>
+      <div class="message" id="message"></div>
+      <p class="closing reveal" data-i18n="closing"></p>
+      <p class="signature reveal" id="signature"></p>
+    </article>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+:root {
+  /* Warm beige palette */
+  --mocha-900: #3e2f24;
+  --mocha-700: #a8693c;
+  --caramel-500: #d9a46f;
+  --cream: #fffaf2;
+  --ink: #4a3b2e;
+  --gold: #e8b766;
+  --tile-gap: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: "Be Vietnam Pro", system-ui, sans-serif;
+  color: var(--ink);
+  /* Beige (top-left) → pink (bottom-right), like the view button */
+  background: linear-gradient(135deg, #ecd3b0 0%, #f4d6c6 50%, #f2aebd 100%);
+  -webkit-tap-highlight-color: transparent;
+}
+
+button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+
+/* ---------- Photo wall ---------- */
+
+.photo-wall {
+  position: fixed;
+  inset: 0;
+  /* Same spacing everywhere: screen edge, between rows and between tiles */
+  padding: var(--tile-gap) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--tile-gap);
+  filter: blur(4px) saturate(1.1);
+  opacity: 0;
+  transition: opacity 2s ease, filter 0.8s ease;
+}
+.photo-wall.is-ready { opacity: 0.85; }
+
+.photo-row { flex: 1; min-height: 0; overflow: hidden; }
+
+.photo-track {
+  display: flex;
+  height: 100%;
+  width: max-content;
+  animation: drift linear infinite;
+}
+.photo-row.is-reverse .photo-track { animation-direction: reverse; }
+
+.photo-track img {
+  height: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  /* margin, not gap: keeps the two halves exactly equal so the -50% loop is seamless */
+  margin-right: var(--tile-gap);
+  border-radius: 14px;
+}
+
+@keyframes drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.veil {
+  position: fixed;
+  inset: 0;
+  /* Tints the blurred photos beige (top-left) → pink (bottom-right) */
+  background: linear-gradient(135deg, rgba(236, 205, 160, 0.65) 0%, rgba(245, 212, 196, 0.45) 50%, rgba(242, 160, 182, 0.65) 100%);
+  transition: opacity 0.8s ease;
+}
+
+/* ---------- Language toggle ---------- */
+
+.lang-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--mocha-900);
+  background: linear-gradient(135deg, rgba(246, 230, 206, 0.9), rgba(248, 210, 218, 0.9));
+  border: 1px solid rgba(201, 163, 107, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+/* ---------- View photos toggle ---------- */
+
+.view-toggle {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  z-index: 10;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-weight: 500;
+  color: var(--cream);
+  background: linear-gradient(135deg, #d9b086 0%, #e39f9f 50%, #d9708f 100%);
+  border: 1px solid rgba(255, 248, 236, 0.55);
+  box-shadow: 0 6px 18px rgba(217, 112, 143, 0.4);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 10px);
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.6s ease 1.5s, transform 0.6s ease 1.5s, width 0.35s ease;
+}
+.is-open .view-toggle { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
+
+/* Viewing mode: card out of the way, photos sharp and bright */
+.is-viewing .photo-wall { filter: none; opacity: 1; }
+.is-viewing .veil { opacity: 0; }
+.is-open.is-viewing .card { opacity: 0; transform: scale(0.95); pointer-events: none; transition-delay: 0s; }
+
+/* ---------- Stage ---------- */
+
+.stage {
+  position: relative;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+.stage > * { grid-area: 1 / 1; }
+
+/* ---------- Envelope ---------- */
+
+.envelope {
+  position: relative;
+  width: min(78vw, 340px);
+  aspect-ratio: 4 / 3;
+  perspective: 900px;
+  transition: transform 0.8s ease, opacity 0.8s ease;
+  animation: float 3.5s ease-in-out infinite;
+}
+.envelope > span { position: absolute; inset: 0; border-radius: 10px; }
+
+.envelope-back { background: linear-gradient(135deg, #c99a6e, #c96a86); box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35); }
+
+.envelope > .letter-peek {
+  inset: 8% 7% 6%;
+  z-index: 1;
+  background: var(--cream);
+  display: grid;
+  place-items: center;
+  transition: transform 0.9s ease 0.5s;
+}
+.letter-heart { color: var(--caramel-500); font-size: 2rem; }
+
+.envelope-front {
+  z-index: 2;
+  background: linear-gradient(135deg, #e6c39b, #eb9db0);
+  clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+}
+
+.envelope-flap {
+  background: linear-gradient(135deg, #dcae82, #e3879f);
+  clip-path: polygon(0 0, 100% 0, 50% 58%);
+  transform-origin: top;
+  transition: transform 0.7s ease, z-index 0s linear 0.35s;
+  z-index: 3;
+}
+
+.envelope > .seal {
+  inset: auto;
+  top: 46%;
+  left: 50%;
+  width: 46px;
+  height: 46px;
+  margin-left: -23px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--cream);
+  background: var(--gold);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 4;
+  transition: opacity 0.3s ease;
+}
+
+.hint {
+  align-self: end;
+  margin-bottom: 12vh;
+  color: var(--mocha-900);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 10px rgba(255, 250, 242, 0.95), 0 0 4px rgba(255, 250, 242, 0.9);
+  animation: pulse 2s ease-in-out infinite;
+  transition: opacity 0.4s ease;
+}
+
+.is-opening .envelope { animation: none; }
+.is-opening .envelope-flap { transform: rotateX(180deg); z-index: 0; }
+.is-opening .seal { opacity: 0; }
+/* animation: none, otherwise the pulse keyframes keep overriding opacity */
+.is-opening .hint { animation: none; opacity: 0; }
+.is-opening .envelope > .letter-peek { transform: translateY(-45%); }
+.is-open .envelope { opacity: 0; transform: scale(0.85) translateY(30px); pointer-events: none; }
+
+/* ---------- Card ---------- */
+
+.card {
+  width: min(100%, 460px);
+  max-height: calc(100svh - 96px);
+  overflow-y: auto;
+  padding: 36px 28px 32px;
+  text-align: center;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(253, 244, 230, 0.97) 0%, rgba(253, 238, 232, 0.96) 50%, rgba(251, 222, 230, 0.96) 100%);
+  box-shadow: 0 30px 70px rgba(120, 80, 40, 0.3);
+  border: 1px solid rgba(232, 183, 102, 0.7);
+  opacity: 0;
+  transform: translateY(40px) scale(0.92);
+  pointer-events: none;
+  transition: opacity 0.9s ease 0.3s, transform 0.9s ease 0.3s, height 0.45s ease;
+}
+.is-open .card { opacity: 1; transform: none; pointer-events: auto; }
+
+.occasion { font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mocha-700); }
+.title {
+  margin: 10px 0 18px;
+  font-family: "Dancing Script", cursive;
+  font-size: clamp(2.3rem, 9vw, 3rem);
+  line-height: 1.1;
+  color: var(--mocha-700);
+}
+.greeting { font-weight: 500; margin-bottom: 12px; }
+.message p { line-height: 1.7; margin-bottom: 12px; font-weight: 300; }
+.closing { margin-top: 18px; font-style: italic; }
+.signature { font-family: "Dancing Script", cursive; font-size: 1.9rem; color: var(--mocha-700); }
+
+.reveal { opacity: 0; transform: translateY(10px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.is-open .reveal { opacity: 1; transform: none; }
+
+/* ---------- Language switch ---------- */
+
+/* Card text slides and blurs; buttons and hint only fade, since their
+   transforms are used for positioning. */
+.lang-out .card > * { animation: text-out 0.25s ease forwards; }
+.lang-in .card > * { animation: text-in 0.45s ease both; }
+.lang-out .hint, .lang-out .view-toggle, .lang-out .lang-toggle { animation: fade-out 0.25s ease forwards; }
+.lang-in .hint, .lang-in .view-toggle, .lang-in .lang-toggle { animation: fade-in 0.45s ease both; }
+
+@keyframes text-out { to { opacity: 0; transform: translateY(-6px); filter: blur(3px); } }
+@keyframes text-in { from { opacity: 0; transform: translateY(6px); filter: blur(3px); } }
+@keyframes fade-out { to { opacity: 0; } }
+@keyframes fade-in { from { opacity: 0; } }
+
+@keyframes float { 50% { transform: translateY(-10px); } }
+@keyframes pulse { 50% { opacity: 0.5; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-track, .envelope, .hint { animation: none; }
+}
