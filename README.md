@@ -15,6 +15,13 @@ Nên nén ảnh trước (cạnh dài ~1200px) để trang tải nhanh trên đi
 
 Sửa `config.js`: tên người nhận, người ký, lời chúc VI/EN. `{name}` được thay bằng tên người nhận.
 
+## Nhạc nền
+
+Sửa `musicUrl` trong `config.js` thành link YouTube bất kỳ, hoặc để `""` nếu không muốn có nhạc.
+Trang thử phát nhạc ngay khi vào. Nếu trình duyệt chặn (thường gặp trên điện thoại), nhạc sẽ bắt đầu từ đầu bài ở lần chạm đầu tiên, tức lúc mở phong bì.
+Nút ♪ ở góc trên bên trái dùng để bật/tắt nhạc. Nếu video bị gỡ hoặc chặn nhúng thì nút tự ẩn và thiệp vẫn chạy bình thường.
+Một số bài nhạc có bản quyền bị YouTube chặn khi chạy ở `localhost`, nhưng vẫn phát được trên domain thật.
+
 ## Xem thử trên máy
 
 ```bash

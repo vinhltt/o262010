@@ -71,9 +71,9 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
   transition: opacity 0.8s ease;
 }
 
-/* ---------- Language toggle ---------- */
+/* ---------- Language and music toggles ---------- */
 
-.lang-toggle {
+.lang-toggle, .music-toggle {
   position: fixed;
   top: 16px;
   right: 16px;
@@ -87,6 +87,13 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
   border: 1px solid rgba(201, 163, 107, 0.6);
   backdrop-filter: blur(8px);
 }
+
+.music-toggle { right: auto; left: 16px; transition: opacity 0.3s ease; }
+.music-toggle.is-off { opacity: 0.55; text-decoration: line-through; }
+.music-toggle[hidden] { display: none; }
+
+/* The YouTube player only provides sound; keep it out of sight. */
+.music-player { position: fixed; left: 0; bottom: 0; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
 
 /* ---------- View photos toggle ---------- */
 

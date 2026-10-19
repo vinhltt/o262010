@@ -4,6 +4,8 @@ window.CARD_CONFIG = {
   recipient: "QanhQanh",
   sender: "Anh Tí Hon",
   defaultLang: "vi",
+  // Background music: any YouTube link. Leave empty ("") for no music.
+  musicUrl: "https://www.youtube.com/watch?v=W7rindfYUHk",
   text: {
     vi: {
       pageTitle: "Gửi {name} · 20/10",

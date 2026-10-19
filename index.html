@@ -17,6 +17,9 @@
   <div class="veil" aria-hidden="true"></div>
 
   <button class="lang-toggle" id="lang-toggle" type="button" aria-label="Switch language">EN</button>
+  <!-- Background music on/off; shown once the YouTube player is ready -->
+  <button class="music-toggle is-off" id="music-toggle" type="button" aria-label="Music" aria-pressed="false" hidden>♪</button>
+  <div class="music-player" aria-hidden="true"><div id="music-player"></div></div>
   <!-- Shown after the card opens: hides the card and un-blurs the photo wall -->
   <button class="view-toggle" id="view-toggle" type="button"></button>
 
@@ -42,5 +45,6 @@
 
   <script src="config.js"></script>
   <script src="main.js"></script>
+  <script src="background-music.js"></script>
 </body>
 </html>
